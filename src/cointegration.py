@@ -1,33 +1,32 @@
-"""Engle-Granger cointegration test (guide, Part 2). Write these yourself.
-
-Step 1: regress y on x by least squares on the formation window:
-        y_t = alpha + beta * x_t + X_t           -> alpha_hat, beta_hat, residual spread X_hat_t
-Step 2: ADF regression on the residual spread:
-        dX_t = gamma * X_{t-1} + sum_{j=1}^{n_lag} a_j * dX_{t-j} + noise
-        (no constant: the residuals already have mean zero)
-Step 3: t-statistic of gamma. Reject "no cointegration" if t < about -3.34 (5%, MacKinnon,
-        two variables). NOT the usual -1.96 and NOT the plain Dickey-Fuller -2.86.
-
-Only numpy is needed. Tip: np.linalg.lstsq for the regressions; the standard error of a
-coefficient is sqrt(s^2 * [(A^T A)^{-1}]_{kk}) with s^2 = RSS / (n - number of columns).
-"""
-
 import numpy as np
 
 EG_CRIT_5PCT = -3.34
 
 
 def ols(y, x):
-    """Least squares fit of y = alpha + beta * x.
-    Return alpha_hat, beta_hat, residuals."""
-    raise NotImplementedError
+    A = np.column_stack([np.ones_like(x), x])
+    coef, *_ = np.linalg.lstsq(A, y, rcond=None)
+    alpha, beta = coef
+    resid = y - A @ coef
+    return alpha, beta, resid
 
 
 def adf_tstat(X, n_lag=1):
-    """t-statistic of gamma in the ADF regression on the series X (no constant)."""
-    raise NotImplementedError
+    dX = np.diff(X)
+    target = dX[n_lag:]
+    cols = [X[n_lag:-1]]
+    for j in range(1, n_lag + 1):
+        cols.append(dX[n_lag - j:-j])
+    B = np.column_stack(cols)
+    coef, *_ = np.linalg.lstsq(B, target, rcond=None)
+    resid = target - B @ coef
+    s2 = resid @ resid / (len(target) - B.shape[1])
+    cov = s2 * np.linalg.inv(B.T @ B)
+    return coef[0] / np.sqrt(cov[0, 0])
 
 
 def engle_granger(y, x, n_lag=1):
-    """Return dict(alpha=..., beta=..., tstat=..., cointegrated=bool, spread=residuals)."""
-    raise NotImplementedError
+    alpha, beta, spread = ols(y, x)
+    tstat = adf_tstat(spread, n_lag)
+    return dict(alpha=alpha, beta=beta, tstat=tstat,
+                cointegrated=bool(tstat < EG_CRIT_5PCT), spread=spread)
