@@ -32,7 +32,7 @@ ALPHA = 0.5
 BETA = 1.2
 PHI = 0.90              # half-life ln(0.5)/ln(0.9), about 6.6 days
 SIGMA = 0.005           # daily shock to the spread
-Q = 4e-6                # daily variance of beta's random walk (drifting-beta dataset only)
+Q = 2.5e-7               # daily variance of beta's random walk (drifting-beta dataset only)
 
 
 def random_walk(rng, x0, vol, n):
@@ -74,7 +74,7 @@ def main():
     x3 = random_walk(rng, X0, VOL_X, T)
     beta_t = BETA + np.concatenate([[0.0], np.cumsum(rng.normal(0.0, np.sqrt(Q), T - 1))])
     X3 = ar1(rng, PHI, SIGMA, T)
-    y3 = ALPHA + beta_t * x3 + X3
+    y3 = ALPHA + BETA * x3 + (beta_t - BETA) * (x3 - X0) + X3
     save("sim_drifting_beta.csv", x3, y3, {"true_beta": beta_t, "true_spread": X3})
 
     params = dict(seed=SEED, T=T, formation=FORMATION, x0=float(X0), vol_x=VOL_X,
