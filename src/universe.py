@@ -1,0 +1,16 @@
+SECTORS = {
+    "banks": ["JPM", "BAC", "C", "WFC", "USB", "PNC", "TFC", "GS", "MS"],
+    "oil": ["XOM", "CVX", "COP", "EOG", "OXY", "PSX", "VLO", "MPC", "SLB", "HAL"],
+    "utilities": ["DUK", "SO", "D", "AEP", "EXC", "XEL", "ED", "PEG", "WEC", "ES"],
+    "staples": ["KO", "PEP", "PG", "CL", "KMB", "GIS", "MDLZ", "HSY", "CPB"],
+    "retail": ["HD", "LOW", "TGT", "WMT", "COST", "DG", "DLTR"],
+    "transport": ["UNP", "CSX", "NSC", "UPS", "FDX"],
+    "payments": ["V", "MA", "AXP", "COF"],
+    "reits": ["SPG", "O", "PLD", "AMT", "PSA", "EQR", "AVB"],
+    "pharma": ["JNJ", "PFE", "MRK", "LLY", "BMY", "ABBV"],
+    "semis": ["INTC", "TXN", "ADI", "MCHP", "QCOM"],
+    "insurance": ["TRV", "CB", "ALL", "PGR", "AIG"],
+    "restaurants": ["MCD", "YUM", "SBUX", "DRI"],
+    "miners": ["BHP", "RIO", "VALE", "FCX"],
+    "countries": ["EWA", "EWC", "EWG", "EWU", "EWJ"],
+}
