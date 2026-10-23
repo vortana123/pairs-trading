@@ -1,23 +1,5 @@
+Bayesian pairs trading
 
-Kalman-filtered hedge ratio, Bellman-optimal entry and exit thresholds, and a CUSUM gate that stops trading when the data stops following the model.
+A pairs-trading system built in Python: an Engle–Granger cointegration screen, a Kalman filter for the hedge ratio and spread, entry and exit thresholds from a Bellman equation with trading costs, and a CUSUM test on the filter innovations to detect pairs that break. Every component was tested against simulated data to see if it worked.
 
-## Layout
-
-```
-data/simulate.py          generates the simulated pairs 
-data/*.csv                columns: t, x, y, window, plus true values
-data/true_params.json     the parameters the data were generated with
-src/cointegration.py      Part 2: Engle-Granger test 
-tests/check_cointegration.py  
-```
-
-## Plan
-
-1. Cointegration test (Part 2)
-2. AR(1) fit of the spread: phi, sigma, half-life (Part 1)
-3. Kalman filter for beta_t and the spread (Part 3)
-4. Value iteration for u_in and u_out (Part 4)
-5. CUSUM on the innovations z_t (Part 5)
-6. Backtest on simulated data, then on real pairs
-
-
+Results: the tests worked as the theory predicted in simulation, but on real data the simple ±2σ rule beats the model-optimal rules. An out-of-sample universe study (88 US-listed stocks and ETFs, from 2014 to 2024) gives a Sharpe ratio of 0.51 with t = 1.69 which is a small edge that is not statistically significant.
