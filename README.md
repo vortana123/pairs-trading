@@ -1,15 +1,14 @@
-# Bayesian pairs trading with optimal entry and exit
 
-Kalman-filtered hedge ratio, Bellman-optimal entry and exit thresholds, and a CUSUM gate that stops trading when the model breaks.
+Kalman-filtered hedge ratio, Bellman-optimal entry and exit thresholds, and a CUSUM gate that stops trading when the data stops following the model.
 
 ## Layout
 
 ```
-data/simulate.py          generates the simulated pairs (already run; CSVs included)
-data/*.csv                columns: t, x, y (log prices), window (formation/trading), plus true values
+data/simulate.py          generates the simulated pairs 
+data/*.csv                columns: t, x, y, window, plus true values
 data/true_params.json     the parameters the data were generated with
-src/cointegration.py      Part 2: Engle-Granger test   <- start here
-tests/check_cointegration.py   runs your test on all three datasets
+src/cointegration.py      Part 2: Engle-Granger test 
+tests/check_cointegration.py  
 ```
 
 ## Plan
@@ -21,10 +20,4 @@ tests/check_cointegration.py   runs your test on all three datasets
 5. CUSUM on the innovations z_t (Part 5)
 6. Backtest on simulated data, then on real pairs
 
-## Setup
 
-```
-pip install -r requirements.txt
-python data/simulate.py               # only if you want to regenerate the data
-python tests/check_cointegration.py
-```
